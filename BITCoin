@@ -1,0 +1,26 @@
+import hashlib
+import time
+
+def mine(block_number, transactions, previous_hash, prefix_zeros):
+    prefix_str = '0' * prefix_zeros
+    nonce = 0
+    while True:
+        text = str(block_number) + transactions + previous_hash + str(nonce)
+        new_hash = hashlib.sha256(text.encode('ascii')).hexdigest()
+        if new_hash.startswith(prefix_str):
+            print(f"Bitcoin mined with nonce value: {nonce}")
+            print(f"Hash: {new_hash}")
+            return new_hash
+        nonce += 1
+
+# Example usage
+block_number = 1
+transactions = 'UserA sends 2 BTC to UserB'
+previous_hash = 'previous_block_hash_here'
+difficulty = 4  # Number of prefix zeros
+
+start_time = time.time()
+new_hash = mine(block_number, transactions, previous_hash, difficulty)
+end_time = time.time()
+
+print(f"Mining took {end_time - start_time} seconds")
